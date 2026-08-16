@@ -1,16 +1,28 @@
-# React + Vite
+# Kinetiq — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React frontend for [Kinetiq](https://github.com/sulekhathakur/Kinetiq) — an AI-powered career progress tracker. This repo contains the client application; the backend (Java/Spring Boot, deployed separately on Render) lives in the linked repo above.
 
-Currently, two official plugins are available:
+**Status:** Early development. Project scaffolded with Vite + React + Tailwind CSS v4.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech stack
 
-## React Compiler
+- React
+- Vite
+- Tailwind CSS v4
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Local setup
 
-## Expanding the ESLint configuration
+1. Clone the repo
+2. Run `npm install`
+3. Run `npm run dev`
+4. Open `http://localhost:5173`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Roadmap
+
+- [x] Project scaffold (Vite + React)
+- [x] Tailwind CSS v4 configured
+- [ ] Auth pages (register/login)
+- [ ] Check-in submission form
+- [ ] Momentum dashboard with trend chart
+- [ ] Weekly recommendation display
+- [ ] Deploy to Vercel, connect to live backend
