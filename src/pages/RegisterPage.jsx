@@ -1,8 +1,8 @@
-import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import apiClient from '../api/client';
 
-function LoginPage() {
+function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -13,11 +13,17 @@ function LoginPage() {
     setError('');
 
     try {
-      const response = await apiClient.post('/auth/login', { email, password });
+      const response = await apiClient.post('/auth/register', { email, password });
       localStorage.setItem('token', response.data.token);
       navigate('/dashboard');
     } catch (err) {
-      setError('Invalid email or password');
+      if (err.response?.data?.password) {
+        setError(err.response.data.password);
+      } else if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
     }
   };
 
@@ -27,7 +33,7 @@ function LoginPage() {
         <h1 className="font-['Space_Grotesk'] text-3xl font-semibold text-white mb-1">
           Kinetiq
         </h1>
-        <p className="text-slate-400 mb-8">Log in to track your momentum.</p>
+        <p className="text-slate-400 mb-8">Create an account to start tracking.</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
@@ -50,6 +56,7 @@ function LoginPage() {
               required
               className="w-full bg-kinetiq-navy-light border border-slate-600 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-kinetiq-amber"
             />
+            <p className="text-xs text-slate-500 mt-1">At least 8 characters</p>
           </div>
 
           {error && (
@@ -60,18 +67,19 @@ function LoginPage() {
             type="submit"
             className="mt-2 bg-kinetiq-amber text-kinetiq-navy font-semibold rounded-lg py-2.5 hover:bg-kinetiq-amber-light transition-colors"
           >
-            Log in
+            Create account
           </button>
         </form>
-          <p className="text-sm text-slate-400 mt-6 text-center">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-kinetiq-amber hover:underline">
-              Sign up
-            </Link>
-          </p>
+
+        <p className="text-sm text-slate-400 mt-6 text-center">
+          Already have an account?{' '}
+          <Link to="/login" className="text-kinetiq-amber hover:underline">
+            Log in
+          </Link>
+        </p>
       </div>
     </div>
   );
 }
 
-export default LoginPage;
+export default RegisterPage;
