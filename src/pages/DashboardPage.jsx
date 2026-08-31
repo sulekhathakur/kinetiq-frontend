@@ -6,7 +6,12 @@ function DashboardPage() {
   const [momentum, setMomentum] = useState(null);
   const [recommendation, setRecommendation] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [generating, setGenerating] = useState(false);
   const navigate = useNavigate();
+
+  const parseRecommendation = (data) => {
+    return typeof data === 'string' ? JSON.parse(data) : data;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +24,7 @@ function DashboardPage() {
 
       try {
         const recRes = await apiClient.get('/recommendations/latest');
-        setRecommendation(JSON.parse(recRes.data));
+        setRecommendation(parseRecommendation(recRes.data));
       } catch (err) {
         setRecommendation(null);
       }
@@ -33,6 +38,17 @@ function DashboardPage() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
+  };
+
+  const handleGenerate = async () => {
+    setGenerating(true);
+    try {
+      const res = await apiClient.get('/recommendations/generate');
+      setRecommendation(parseRecommendation(res.data));
+    } catch (err) {
+      // Leave the existing recommendation in place if generation fails.
+    }
+    setGenerating(false);
   };
 
   if (loading) {
@@ -88,8 +104,20 @@ function DashboardPage() {
         </div>
 
         <div className="bg-kinetiq-navy-light rounded-xl p-6">
-          <p className="text-sm text-kinetiq-amber mb-2 font-medium">This week's focus</p>
-          {recommendation ? (
+          <div className="flex justify-between items-start mb-2">
+            <p className="text-sm text-kinetiq-amber font-medium">This week's focus</p>
+            <button
+              onClick={handleGenerate}
+              disabled={generating}
+              className="text-xs text-slate-400 hover:text-white transition-colors disabled:opacity-50"
+            >
+              {generating ? 'Generating...' : recommendation ? 'Refresh' : 'Generate'}
+            </button>
+          </div>
+
+          {generating ? (
+            <p className="text-slate-400">Analyzing your recent progress...</p>
+          ) : recommendation ? (
             <>
               <p className="text-white mb-3">{recommendation.summary}</p>
               <ul className="list-disc list-inside text-slate-300 mb-3">
