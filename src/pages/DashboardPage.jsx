@@ -56,6 +56,13 @@ function DashboardPage() {
           </button>
         </div>
 
+        <button
+          onClick={() => navigate('/checkin')}
+          className="bg-kinetiq-amber text-kinetiq-navy font-semibold rounded-lg px-4 py-2 mb-6 hover:bg-kinetiq-amber-light transition-colors"
+        >
+          + New check-in
+        </button>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           <div className="bg-kinetiq-surface rounded-xl p-6">
             <p className="text-sm text-slate-500 mb-1">Momentum score</p>
