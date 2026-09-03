@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import apiClient from '../api/client';
 
 function DashboardPage() {
   const [momentum, setMomentum] = useState(null);
   const [recommendation, setRecommendation] = useState(null);
+  const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const navigate = useNavigate();
@@ -20,6 +22,13 @@ function DashboardPage() {
         setMomentum(momentumRes.data);
       } catch (err) {
         setMomentum(null);
+      }
+
+      try {
+        const historyRes = await apiClient.get('/momentum/history');
+        setHistory(historyRes.data);
+      } catch (err) {
+        setHistory([]);
       }
 
       try {
@@ -102,6 +111,20 @@ function DashboardPage() {
             )}
           </div>
         </div>
+
+        {history.length > 0 && (
+          <div className="bg-kinetiq-surface rounded-xl p-6 mb-6">
+            <p className="text-sm text-slate-500 mb-4">Momentum over time</p>
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={history}>
+                <XAxis dataKey="snapshotDate" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
+                <Tooltip />
+                <Line type="monotone" dataKey="momentumScore" stroke="#D98F4E" strokeWidth={2} dot={{ r: 3 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        )}
 
         <div className="bg-kinetiq-navy-light rounded-xl p-6">
           <div className="flex justify-between items-start mb-2">
