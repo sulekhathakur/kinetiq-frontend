@@ -81,12 +81,20 @@ function DashboardPage() {
           </button>
         </div>
 
-        <button
-          onClick={() => navigate('/checkin')}
-          className="bg-kinetiq-amber text-kinetiq-navy font-semibold rounded-lg px-4 py-2 mb-6 hover:bg-kinetiq-amber-light transition-colors"
-        >
-          + New check-in
-        </button>
+        <div className="flex items-center gap-4 mb-6">
+          <button
+            onClick={() => navigate('/checkin')}
+            className="bg-kinetiq-amber text-kinetiq-navy font-semibold rounded-lg px-4 py-2 hover:bg-kinetiq-amber-light transition-colors"
+          >
+            + New check-in
+          </button>
+          <button
+            onClick={() => navigate('/evidence')}
+            className="text-sm text-slate-400 hover:text-white transition-colors"
+          >
+            View evidence history
+          </button>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           <div className="bg-kinetiq-surface rounded-xl p-6">
